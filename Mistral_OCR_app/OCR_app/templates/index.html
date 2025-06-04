@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Reconnaissance OCR Mistral</title>
+</head>
+<body>
+    <h1>Transcrire un document ancien</h1>
+    <form id="ocr-form" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*" required>
+        <button type="submit">Envoyer à Mistral</button>
+    </form>
+    <pre id="result"></pre>
+
+    <script>
+        document.getElementById('ocr-form').onsubmit = async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const res = await fetch('/ocr', { method: 'POST', body: formData });
+            const data = await res.json();
+            document.getElementById('result').textContent = data.text || data.error;
+        };
+    </script>
+</body>
+</html>
